@@ -1,6 +1,6 @@
 <template>
   <div class="page-p">
-    <h1>Mangoes - {{ mangoes.data?.length }} Recent</h1>
+    <h1>Mangoes - Top {{ mangoes.data?.length }}</h1>
     <div class="ui seven column doubling grid">
         <a :href="`/mangoes/${mango.id}`" class="column" v-for="mango in mangoes.data" :key="mango.id" @click="e=>navigateTo(e, `/mangoes/${mango.id}`)">
             <div v-if="mangoImages[mango.id]" class="ui link inverted fluid card">
@@ -37,7 +37,7 @@ const navigateTo = (e, page) =>{
     }
 }
 const mangoImages = reactive({})
-const { data: mangoes } = await axios.get('https://api.mangadex.org/manga?limit=14')
+const { data: mangoes } = await axios.get('https://api.mangadex.org/manga?limit=14&availableTranslatedLanguage[]=en&order[followedCount]=desc')
 await mangoes.data.map(async(i) => {
     mangoImages[i.id] = `https://uploads.mangadex.org/covers/${i.id}/${await (await axios.get(`https://api.mangadex.org/cover/${i.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}.256.jpg`
 });

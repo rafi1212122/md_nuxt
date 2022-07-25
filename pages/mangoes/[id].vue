@@ -2,6 +2,7 @@
   <div>
     <Head>
       <Title>{{ data.data.attributes.title[Object.keys(data.data.attributes.title)[0]] }} - Mango</Title>
+      <Meta name="description" :content="data.data.attributes.description.en?data.data.attributes.description.en:data.data.attributes.title[Object.keys(data.data.attributes.title)[0]]" />
     </Head>
     <header>
       <div class="page-p header-bg" :style="{'background': `url(/_ipx/f_webp,q_75/${mangoCover['512']})`, 'filter': 'blur(0.25rem)','background-repeat': 'no-repeat', 'height': '25vh', 'background-size': 'cover', 'opacity': '0.6', 'background-color': '#000'}"></div>
@@ -43,8 +44,9 @@
       </div>
       <div v-else v-for="chapter in chapterData?.data" :key="chapter.id" id="chapter-item" class="ui inverted segment">
         <div id="chapter-name">
-          <p id="chapter-num">Chapter {{ chapter.attributes.chapter }}</p>
-          <p>{{ chapter.attributes.title }}</p>
+          <a id="chapter-num">Chapter {{ chapter.attributes.chapter }}</a>
+          <a>{{ chapter.attributes.title }}</a>
+          <NuxtLink :to="chapter.attributes.externalUrl" target="_blank" v-if="chapter.attributes.externalUrl&&!chapter.attributes.pages"><i class="external alternate icon"></i></NuxtLink>
         </div>
         <div id="chapter-info" :style="{'display': 'flex', 'gap': '0.5rem', 'justify-content': 'space-between', 'min-width': '33%'}">
           <p v-if="groupInfo[chapter.id]"><i style="margin-right:0.25rem" :class="groupInfo[chapter.id]?.type=='user'?'user icon':'group icon'"></i> {{ groupInfo[chapter.id]?.type=='user'?groupInfo[chapter.id]?.attributes.username:groupInfo[chapter.id]?.attributes.name }}</p>
@@ -66,13 +68,16 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  cursor: pointer;
   outline: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #chapter-item #chapter-name{
   display: flex;
   gap: 1rem;
+}
+
+#chapter-item #chapter-name *{
+  color: #ffffff;
 }
 
 #chapter-item:first-child{
@@ -107,6 +112,7 @@
 
 .header-content h1{
   font-family: 'Poppins', sans-serif;
+  font-display: swap;
   margin-top: 1rem;
   word-break: break-word;
   margin-bottom: 0;

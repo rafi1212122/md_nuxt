@@ -4,7 +4,12 @@
         <a href="/" class="nav-btn" @click="e=>navigateTo(e, '/')" v-bind:style="[route.name=='index'&&{'background': '#ff6740', 'border': 'none'}]">Home</a>
         <a href="/mangoes" class="nav-btn" @click="e=>navigateTo(e, '/mangoes')" v-bind:style="[route.name.includes('mangoes')&&{'background': '#ff6740', 'border': 'none'}]">Mangoes</a>
     </div>
-    <button class="nav-btn">Sign In</button>
+    <div>
+        <a style="padding-top:0;padding-bottom:0;display:flex;align-items:center" class="nav-btn">
+            <i class="search icon"></i>
+        </a>
+        <a class="nav-btn">Sign In</a>
+    </div>
   </div>
 </template>
 
@@ -44,6 +49,14 @@
     transition: ease 150ms;
 }
 </style>
+
+<script>
+export default {
+    props: {
+        openModal: Function
+    },
+}
+</script>
 
 <script setup>
 const route = useRoute()
