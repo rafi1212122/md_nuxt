@@ -37,8 +37,8 @@ const navigateTo = (e, page) =>{
     }
 }
 const mangoImages = reactive({})
-const { data: mangoes } = await useFetch('https://api.mangadex.org/manga?limit=14')
-await mangoes._value.data.map(async(i) => {
+const { data: mangoes } = await axios.get('https://api.mangadex.org/manga?limit=14')
+await mangoes.data.map(async(i) => {
     mangoImages[i.id] = `https://uploads.mangadex.org/covers/${i.id}/${await (await axios.get(`https://api.mangadex.org/cover/${i.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}.256.jpg`
 });
 </script>
