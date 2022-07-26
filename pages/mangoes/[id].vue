@@ -51,7 +51,7 @@
           </div>
         </div>
         <div id="chapter-info" :style="{'display': 'flex', 'gap': '0.5rem', 'justify-content': 'space-between', 'min-width': '33%'}">
-          <p v-if="groupInfo[chapter.id]"><i style="margin-right:0.25rem" :class="groupInfo[chapter.id]?.type=='user'?'user icon':'group icon'"></i> {{ groupInfo[chapter.id]?.type=='user'?groupInfo[chapter.id]?.attributes.username:groupInfo[chapter.id]?.attributes.name }}</p>
+          <p><i style="margin-right:0.25rem" :class="chapter.relationships.find(i=>i.type=='scanlation_group')?'group icon':'user icon'"></i> {{ chapter.relationships.find(i=>i.type=='scanlation_group')?chapter.relationships.find(i=>i.type=='scanlation_group')?.attributes?.name:chapter.relationships.find(i=>i.type=='user')?.attributes.username }}</p>
           <p><i style="margin-right:0.25rem" :class="'clock icon'"></i> {{ dayjs(chapter.attributes.readableAt).fromNow() }}</p>
         </div>
       </div>
@@ -193,22 +193,9 @@ dayjs.extend(relativeTime)
 
 const route = useRoute()
 const mangoCover = reactive({})
-const groupInfo = reactive({})
 const { data } = await axios.get(`https://api.mangadex.org/manga/${route.params.id}`)
-const { data: chapterData, pending } = useLazyFetch(`https://api.mangadex.org/chapter?manga=${route.params.id}&order[chapter]=desc&translatedLanguage[]=en`, { initialCache: false })
+const { data: chapterData, pending } = useLazyFetch(`https://api.mangadex.org/chapter?manga=${route.params.id}&order[chapter]=desc&translatedLanguage[]=en&includes[]=user&includes[]=scanlation_group`, { initialCache: false })
 mangoCover['256'] = `https://uploads.mangadex.org/covers/${route.params.id}/${await (await axios.get(`https://api.mangadex.org/cover/${data.data.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}.256.jpg`
 mangoCover['512'] = `https://uploads.mangadex.org/covers/${route.params.id}/${await (await axios.get(`https://api.mangadex.org/cover/${data.data.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}.512.jpg`
 mangoCover['original'] = `https://uploads.mangadex.org/covers/${route.params.id}/${await (await axios.get(`https://api.mangadex.org/cover/${data.data.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}`
-
-watch(chapterData, async () => {
-  chapterData.value.data.forEach(async (ch) => {
-    if(ch.relationships.find(i=>i.type=='scanlation_group')?.id){
-      const { data: groupInfoFetch } = await axios.get(`https://api.mangadex.org/group/${ch.relationships.find(i=>i.type=='scanlation_group')?.id}`)
-      groupInfo[ch.id] = groupInfoFetch.data
-    }else{
-      const { data: userInfoFetch } = await axios.get(`https://api.mangadex.org/user/${ch.relationships.find(i=>i.type=='user')?.id}`)
-      groupInfo[ch.id] = userInfoFetch.data
-    }
-  });
-})
 </script>
