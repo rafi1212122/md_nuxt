@@ -44,9 +44,11 @@
       </div>
       <div v-else v-for="chapter in chapterData?.data" :key="chapter.id" id="chapter-item" class="ui inverted segment">
         <div id="chapter-name">
-          <a id="chapter-num">Chapter {{ chapter.attributes.chapter }}</a>
-          <a>{{ chapter.attributes.title }}</a>
-          <NuxtLink :to="chapter.attributes.externalUrl" target="_blank" v-if="chapter.attributes.externalUrl&&!chapter.attributes.pages"><i class="external alternate icon"></i></NuxtLink>
+          <NuxtLink id="chapter-num">Chapter {{ chapter.attributes.chapter }}</NuxtLink>
+          <div style="display:flex;gap:0.5rem;">
+            <NuxtLink>{{ chapter.attributes.title }}</NuxtLink>
+            <NuxtLink id="ext-link" :to="chapter.attributes.externalUrl" target="_blank" v-if="chapter.attributes.externalUrl&&!chapter.attributes.pages"><i class="external alternate icon"></i></NuxtLink>
+          </div>
         </div>
         <div id="chapter-info" :style="{'display': 'flex', 'gap': '0.5rem', 'justify-content': 'space-between', 'min-width': '33%'}">
           <p v-if="groupInfo[chapter.id]"><i style="margin-right:0.25rem" :class="groupInfo[chapter.id]?.type=='user'?'user icon':'group icon'"></i> {{ groupInfo[chapter.id]?.type=='user'?groupInfo[chapter.id]?.attributes.username:groupInfo[chapter.id]?.attributes.name }}</p>

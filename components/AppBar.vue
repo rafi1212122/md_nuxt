@@ -1,13 +1,13 @@
 <template>
   <div class="bar-root">
     <div>
-        <a href="/" class="nav-btn" @click="e=>navigateTo(e, '/')" v-bind:style="[route.name=='index'&&{'background': '#ff6740', 'border': 'none'}]">Home</a>
-        <a href="/mangoes" class="nav-btn" @click="e=>navigateTo(e, '/mangoes')" v-bind:style="[route.name.includes('mangoes')&&{'background': '#ff6740', 'border': 'none'}]">Mangoes</a>
+        <NuxtLink to="/" class="nav-btn"  v-bind:style="[route.name=='index'&&{'background': '#ff6740', 'border': 'none'}]">Home</NuxtLink>
+        <NuxtLink to="/mangoes" class="nav-btn" v-bind:style="[route.name.includes('mangoes')&&{'background': '#ff6740', 'border': 'none'}]">Mangoes</NuxtLink>
     </div>
     <div>
-        <a style="padding-top:0;padding-bottom:0;display:flex;align-items:center" class="nav-btn">
+        <NuxtLink @click="openModal" style="padding-top:0;padding-bottom:0;display:flex;align-items:center" class="nav-btn">
             <i class="search icon"></i>
-        </a>
+        </NuxtLink>
         <a class="nav-btn">Sign In</a>
     </div>
   </div>
@@ -52,19 +52,10 @@
 
 <script>
 export default {
-    props: {
-        openModal: Function
-    },
+    props: ['openModal'],
 }
 </script>
 
 <script setup>
 const route = useRoute()
-const router = useRouter()
-const navigateTo = (e, page) =>{
-    if(!e.ctrlKey){
-        e.preventDefault()
-        router.push({path: page})
-    }
-}
 </script>
