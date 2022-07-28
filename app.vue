@@ -123,7 +123,8 @@ h1{
     font-size: 1.2rem!important;
   }
   #res-img{
-    height: 5rem;
+    height: 5.625rem;
+    width: 3.75rem;
   }
 }
 

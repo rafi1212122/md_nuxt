@@ -5,9 +5,9 @@
       <Meta name="description" :content="data.data.attributes.description.en?data.data.attributes.description.en:data.data.attributes.title[Object.keys(data.data.attributes.title)[0]]" />
     </Head>
     <header>
-      <div class="page-p header-bg" :style="{'background': `url(/_ipx/f_webp,q_75/${mangoCover['512']})`, 'filter': 'blur(0.25rem)','background-repeat': 'no-repeat', 'height': '25vh', 'background-size': 'cover', 'opacity': '0.6', 'background-color': '#000'}"></div>
+      <div class="page-p header-bg" :style="{'background': `url(/_ipx/f_webp,q_75/${mangoCover['256']})`, 'filter': 'blur(0.25rem)','background-repeat': 'no-repeat', 'height': '25vh', 'background-size': 'cover', 'opacity': '0.6', 'background-color': '#000'}"></div>
       <div class="header-content page-m-p">
-        <nuxt-img preload :alt='`${data.data.attributes.title[Object.keys(data.data.attributes.title)[0]]} Cover Art`' style="width:256px;object-fit:cover;" loading="lazy" format='webp' :style="{'border-radius': '0.4rem'}" ref="cover" class="cover" :src="mangoCover['512']" quality='75'/>
+        <nuxt-img preload :alt='`${data.data.attributes.title[Object.keys(data.data.attributes.title)[0]]} Cover Art`' style="width:256px;object-fit:cover;" loading="lazy" format='webp' :style="{'border-radius': '0.4rem'}" ref="cover" class="cover" :src="mangoCover['256']" quality='75'/>
         <div class="header-details">
           <h1>{{ data.data.attributes.title[Object.keys(data.data.attributes.title)[0]] }}</h1>
           <div class="mango-tags">
