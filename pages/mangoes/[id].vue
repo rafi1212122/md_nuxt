@@ -45,14 +45,16 @@
       <div v-else v-for="chapter in chapterData?.data" :key="chapter.id" id="chapter-item" class="ui inverted segment">
         <div id="chapter-name">
           <NuxtLink id="chapter-num">Chapter {{ chapter.attributes.chapter }}</NuxtLink>
+          <div id="end-label-mobile" v-if="data.data.attributes.lastChapter==chapter.attributes.chapter" :style="{'padding': '0.21rem', 'border': '1px solid rgba(255, 255, 255, 0.025)', 'margin-left': '0.5rem', 'display': 'none'}" class="ui primary label mobile only">End</div>
           <div style="display:flex;gap:0.5rem;">
             <NuxtLink>{{ chapter.attributes.title }}</NuxtLink>
             <NuxtLink id="ext-link" :to="chapter.attributes.externalUrl" target="_blank" v-if="chapter.attributes.externalUrl&&!chapter.attributes.pages"><i class="external alternate icon"></i></NuxtLink>
+            <div id="end-label-wide" v-if="data.data.attributes.lastChapter==chapter.attributes.chapter" :style="{'padding': '0.21rem', 'border': '1px solid rgba(255, 255, 255, 0.025)'}" class="ui primary label">End</div>
           </div>
         </div>
         <div id="chapter-info" :style="{'display': 'flex', 'gap': '0.5rem', 'justify-content': 'space-between', 'min-width': '33%'}">
           <p><i style="margin-right:0.25rem" :class="chapter.relationships.find(i=>i.type=='scanlation_group')?'group icon':'user icon'"></i> {{ chapter.relationships.find(i=>i.type=='scanlation_group')?chapter.relationships.find(i=>i.type=='scanlation_group')?.attributes?.name:chapter.relationships.find(i=>i.type=='user')?.attributes.username }}</p>
-          <p><i style="margin-right:0.25rem" :class="'clock icon'"></i> {{ dayjs(chapter.attributes.readableAt).fromNow() }}</p>
+          <p :title="dayjs(chapter.attributes.readableAt).format('LLL')"><i style="margin-right:0.25rem" :class="'clock icon'"></i> {{ dayjs(chapter.attributes.readableAt).fromNow() }}</p>
         </div>
       </div>
     </div>
@@ -165,6 +167,14 @@
     display: block!important;
     text-align: end;
   }
+
+  #end-label-mobile{
+    display: inline!important;;
+  }
+
+  #end-label-wide{
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 512px) {
@@ -184,18 +194,39 @@
 }
 </style>
 
+<script>
+export default {
+  // async asyncData ({ req, res }) {
+  //     if (process.server) {
+  //       console.log(req.headers.host)
+  //     }
+  // },
+  created(ctx){
+    console.log(ctx)
+  }
+}
+</script>
+
 <script setup>
 import axios from 'axios'
 import { marked } from 'marked'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 dayjs.extend(relativeTime)
+dayjs.extend(LocalizedFormat)
+
+const nuxtApp = useNuxtApp()
+let host = ''
+if(process.server) {
+  host = `http://${nuxtApp.ssrContext.req.headers.host}`
+}
 
 const route = useRoute()
 const mangoCover = reactive({})
-const { data } = await axios.get(`https://api.mangadex.org/manga/${route.params.id}`)
-const { data: chapterData, pending } = useLazyFetch(`https://api.mangadex.org/chapter?manga=${route.params.id}&order[chapter]=desc&translatedLanguage[]=en&includes[]=user&includes[]=scanlation_group`, { initialCache: false })
-mangoCover['256'] = `https://uploads.mangadex.org/covers/${route.params.id}/${await (await axios.get(`https://api.mangadex.org/cover/${data.data.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}.256.jpg`
-mangoCover['512'] = `https://uploads.mangadex.org/covers/${route.params.id}/${await (await axios.get(`https://api.mangadex.org/cover/${data.data.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}.512.jpg`
-mangoCover['original'] = `https://uploads.mangadex.org/covers/${route.params.id}/${await (await axios.get(`https://api.mangadex.org/cover/${data.data.relationships.find(i=>i.type=='cover_art').id}`)).data.data.attributes.fileName}`
+const { data } = await axios.get(`${host}/api/manga/${route.params.id}?includes[]=cover_art`)
+const { data: chapterData, pending } = useLazyFetch(`${host}/api/chapter?manga=${route.params.id}&order[chapter]=desc&translatedLanguage[]=en&includes[]=user&includes[]=scanlation_group`, { initialCache: false })
+mangoCover['256'] = `https://uploads.mangadex.org/covers/${route.params.id}/${data.data.relationships.find(i=>i.type=='cover_art').attributes.fileName}.256.jpg`
+mangoCover['512'] = `https://uploads.mangadex.org/covers/${route.params.id}/${data.data.relationships.find(i=>i.type=='cover_art').attributes.fileName}.512.jpg`
+mangoCover['original'] = `https://uploads.mangadex.org/covers/${route.params.id}/${data.data.relationships.find(i=>i.type=='cover_art').attributes.fileName}`
 </script>

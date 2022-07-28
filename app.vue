@@ -22,7 +22,7 @@
               <p class="header" style="font-weight:bold;margin-bottom:0.25rem">{{ mango.attributes?.title[Object.keys(mango.attributes?.title)[0]] }}</p>
               <div :style="{'padding': '0.35rem 0.25rem 0.35rem 0.25rem', 'background-color': 'rgba(255, 255, 255, 0.1)', 'border': '1px solid rgba(255, 255, 255, 0.025)', 'font-family': `'SF Pro Display', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif`}" class="ui red label">{{ mango.attributes?.status?.toUpperCase() }}</div>
             </div>
-            <!-- <p style="font-weight:bold">Latest Chapter: </p> -->
+            <p style="font-weight:bold">Last Uploaded Chapter: {{ lastChapters[mango.id] || '-' }}</p>
           </div>
         </NuxtLink>
       </div>
@@ -154,7 +154,8 @@ export default {
       searchInput: 'default',
       searchResult: [],
       searchLoading: false,
-      debouncer: null
+      debouncer: null,
+      lastChapters: []
     }
   },
   head () {
@@ -193,11 +194,16 @@ export default {
       $('#search-modal').modal('hide')
     },
     async getSearchResult(query) {
+      this.lastChapters = []
       if(!query){
         this.searchLoading = false
         return this.searchResult = []
       }
-      const { data } = await axios.get(`https://api.mangadex.org/manga?title=${query}&limit=5&order[relevance]=desc&includes[]=cover_art`)
+      const { data } = await axios.get(`/api/manga?title=${query}&limit=5&order[relevance]=desc&includes[]=cover_art`)
+      await data.data.forEach(async (e) => {
+        let lastChapter = await (await axios.get(`/api/chapter?manga=${e.id}&order[chapter]=desc&limit=1&translatedLanguage[]=en`)).data.data
+        this.lastChapters[e.id] = lastChapter[0]?.attributes.title=='Oneshot'?'Oneshot':lastChapter[0]?.attributes.chapter
+      });
       this.searchLoading = false
       this.searchResult = data.data
     }
@@ -209,9 +215,6 @@ export default {
       this.debouncer = setTimeout(() => {
         this.getSearchResult(val)
       }, 900)
-    },
-    searchResult(res){
-      console.log(res)
     }
   }
 }

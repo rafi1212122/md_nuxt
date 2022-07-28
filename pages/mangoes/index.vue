@@ -29,7 +29,12 @@ export default {
 <script setup>
 import axios from 'axios'
 
-const mangoImages = reactive({})
-const { data: mangoes } = await axios.get('https://api.mangadex.org/manga?limit=14&availableTranslatedLanguage[]=en&order[followedCount]=desc&includes[]=cover_art')
+const nuxtApp = useNuxtApp()
+let host = ''
+if(process.server) {
+  host = `http://${nuxtApp.ssrContext.req.headers.host}`
+}
+
+const { data: mangoes } = await axios.get(`${host}/api/manga?limit=14&availableTranslatedLanguage[]=en&order[followedCount]=desc&includes[]=cover_art`)
 </script>
 
