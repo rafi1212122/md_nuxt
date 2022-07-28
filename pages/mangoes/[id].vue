@@ -194,25 +194,12 @@
 }
 </style>
 
-<script>
-export default {
-  // async asyncData ({ req, res }) {
-  //     if (process.server) {
-  //       console.log(req.headers.host)
-  //     }
-  // },
-  created(ctx){
-    console.log(ctx)
-  }
-}
-</script>
-
 <script setup>
 import axios from 'axios'
 import { marked } from 'marked'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
-import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat.js'
 dayjs.extend(relativeTime)
 dayjs.extend(LocalizedFormat)
 

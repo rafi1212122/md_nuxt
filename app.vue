@@ -16,7 +16,7 @@
           </div>
         </div>
         <NuxtLink @click="hideModal" style="display:flex" class="ui segment inverted" v-else v-for="mango in searchResult" :key="mango.id" :to="`/mangoes/${mango.id}`">
-          <img id="res-img" :src="`https://uploads.mangadex.org/covers/${mango.id}/${mango.relationships.find(i=>i.type=='cover_art')?.attributes.fileName}.256.jpg`" :alt="`${mango.attributes?.title[Object.keys(mango.attributes?.title)[0]]} Cover`">
+          <nuxt-img id="res-img" format='webp' quality='75' :src="`https://uploads.mangadex.org/covers/${mango.id}/${mango.relationships.find(i=>i.type=='cover_art')?.attributes.fileName}.256.jpg`" :alt="`${mango.attributes?.title[Object.keys(mango.attributes?.title)[0]]} Cover`"/>
           <div id="res-details">
             <div>
               <p class="header" style="font-weight:bold;margin-bottom:0.25rem">{{ mango.attributes?.title[Object.keys(mango.attributes?.title)[0]] }}</p>
