@@ -163,12 +163,9 @@ export default {
     return {
       script: [
         { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' },
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.js' },
-        { src: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/components/modal.min.js' }
+        { src: '/semantic.min.js' },
       ],
       link: [
-        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css' },
-        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/components/modal.min.css' },
         {
           rel: "preconnect",
           href: "https://fonts.googleapis.com/",
