@@ -1,7 +1,7 @@
 <template>
-  <div class="bar-root">
+  <div v-bind:style="[route.name=='chapter-id'&&{'display': 'none'}]" class="bar-root">
     <div>
-        <NuxtLink to="/" class="nav-btn"  v-bind:style="[route.name=='index'&&{'background': '#ff6740', 'border': 'none'}]">Home</NuxtLink>
+        <NuxtLink to="/" class="nav-btn" v-bind:style="[route.name=='index'&&{'background': '#ff6740', 'border': 'none'}]">Home</NuxtLink>
         <NuxtLink to="/mangoes" class="nav-btn" v-bind:style="[route.name.includes('mangoes')&&{'background': '#ff6740', 'border': 'none'}]">Mangoes</NuxtLink>
     </div>
     <div>

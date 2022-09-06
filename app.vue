@@ -27,7 +27,7 @@
         </NuxtLink>
       </div>
     </div>
-    <div class="page-root">
+    <div v-bind:style="[route.name=='chapter-id'&&{'padding-top': '0'}]" class="page-root">
       <NuxtPage/>
     </div>
   </div>
@@ -144,6 +144,8 @@ img {
 
 <script setup>
 import 'normalize.css';
+import 'assets/semantic.min.css'
+const route = useRoute()
 </script>
 
 <script>
@@ -163,7 +165,10 @@ export default {
     return {
       script: [
         { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' },
-        { src: '/semantic.min.js' },
+        // { src: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/components/modal.min.js' },
+        // { src: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/components/dimmer.min.js' },
+        // { src: 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/components/transition.min.js' },
+        { src: '/semantic.prod.js' },
       ],
       link: [
         {

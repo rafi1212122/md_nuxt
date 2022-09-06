@@ -44,10 +44,10 @@
       </div>
       <div v-else v-for="chapter in chapterData?.data" :key="chapter.id" id="chapter-item" class="ui inverted segment">
         <div id="chapter-name">
-          <NuxtLink id="chapter-num">Chapter {{ chapter.attributes.chapter }}</NuxtLink>
+          <NuxtLink :to="`/chapter/${chapter.id}`" id="chapter-num">Chapter {{ chapter.attributes.chapter }}</NuxtLink>
           <div id="end-label-mobile" v-if="data.data.attributes.lastChapter==chapter.attributes.chapter" :style="{'padding': '0.21rem', 'border': '1px solid rgba(255, 255, 255, 0.025)', 'margin-left': '0.5rem', 'display': 'none'}" class="ui primary label mobile only">End</div>
           <div style="display:flex;gap:0.5rem;">
-            <NuxtLink>{{ chapter.attributes.title }}</NuxtLink>
+            <NuxtLink :to="`/chapter/${chapter.id}`">{{ chapter.attributes.title }}</NuxtLink>
             <NuxtLink id="ext-link" :to="chapter.attributes.externalUrl" target="_blank" v-if="chapter.attributes.externalUrl&&!chapter.attributes.pages"><i class="external alternate icon"></i></NuxtLink>
             <div id="end-label-wide" v-if="data.data.attributes.lastChapter==chapter.attributes.chapter" :style="{'padding': '0.21rem', 'border': '1px solid rgba(255, 255, 255, 0.025)'}" class="ui primary label">End</div>
           </div>
